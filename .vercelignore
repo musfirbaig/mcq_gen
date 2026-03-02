@@ -4,7 +4,7 @@ intermediate_data_min/
 *.md
 *.dot
 *.mmd
-*.txt
+analyzer_error_response.txt
 test_*.py
 check_models.py
 save_graph*.py

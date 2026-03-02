@@ -33,3 +33,5 @@ sample_content.md
 # OS files
 .DS_Store
 Thumbs.db
+.vercel
+.env*.local
