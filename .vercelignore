@@ -1,0 +1,18 @@
+# Exclude dev/test files and large intermediary data from Vercel deployment
+intermediate_data/
+intermediate_data_min/
+*.md
+*.dot
+*.mmd
+*.txt
+test_*.py
+check_models.py
+save_graph*.py
+create_indexes.py
+update_database_indexes.py
+start_server.py
+examples.py
+__pycache__/
+*.pyc
+.env
+.env.*
