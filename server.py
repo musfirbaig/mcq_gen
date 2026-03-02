@@ -544,6 +544,14 @@ async def get_mcq(mcq_id: str):
     )
 
 
+# --- Vercel serverless handler ---
+try:
+    from mangum import Mangum
+    handler = Mangum(app, lifespan="off")
+except ImportError:
+    handler = None  # mangum not needed when running locally with uvicorn
+
+
 if __name__ == "__main__":
     import uvicorn
     
