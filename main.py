@@ -154,7 +154,7 @@ def main():
     
     parser.add_argument(
         "--llm",
-        choices=["anthropic", "openai", "gemini"],
+        choices=["anthropic", "openai", "gemini", "groq"],
         default="gemini",
         help="LLM provider to use"
     )
