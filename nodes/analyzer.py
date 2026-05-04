@@ -58,6 +58,19 @@ CRITICAL RULES:
 5. Return ONLY valid JSON, no markdown formatting
 """
 
+def _prepare_content_for_prompt(content: str) -> str:
+    """
+    Keep analyzer payload under provider limits to avoid timeout/size errors.
+    """
+    max_chars = int(os.getenv("ANALYZER_MAX_CHARS", "12000"))
+    if len(content) <= max_chars:
+        return content
+    return (
+        content[:max_chars]
+        + "\n\n[TRUNCATED CONTENT]\n"
+        + "Content was truncated to stay within token limits."
+    )
+
 
 def analyze_chapter_content(content: str, llm) -> List[ConceptJSON]:
     """
@@ -70,11 +83,12 @@ def analyze_chapter_content(content: str, llm) -> List[ConceptJSON]:
     Returns:
         List of ConceptJSON objects
     """
+    safe_content = _prepare_content_for_prompt(content)
     messages = [
         SystemMessage(content=ANALYZER_SYSTEM_PROMPT),
         HumanMessage(content=f"""Extract mathematical concepts from this chapter content:
 
-{content}
+{safe_content}
 
 Return a JSON array of concept objects. Aim for 40-50 concepts covering all major topics.""")
     ]
@@ -140,11 +154,12 @@ def analyze_existing_mcqs(content: str, llm) -> List[ConceptJSON]:
     Returns:
         List of ConceptJSON objects inferred from MCQ patterns
     """
+    safe_content = _prepare_content_for_prompt(content)
     messages = [
         SystemMessage(content=ANALYZER_SYSTEM_PROMPT),
         HumanMessage(content=f"""Analyze these existing MCQs and extract the underlying mathematical concepts:
 
-{content}
+{safe_content}
 
 For each unique concept/technique being tested, create a concept object. 
 Return a JSON array of 30-40 concepts that could generate similar questions.""")
@@ -283,8 +298,8 @@ def content_analyzer_node(state: MCQGeneratorState) -> Dict:
     print("CONTENT ANALYZER NODE")
     print("="*60)
     # Initialize LLM based on config
-    llm_provider = state["config"].get("llm_provider", "groq")
-    model = state["config"].get("model", "openai/gpt-oss-120b")
+    llm_provider = state["config"].get("llm_provider", "openai")
+    model = state["config"].get("model", "nvidia/nemotron-3-super-120b-a12b:free")
     
     if llm_provider == "anthropic":
         llm = ChatAnthropic(model=model, temperature=0.3)

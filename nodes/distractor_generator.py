@@ -206,8 +206,8 @@ def distractor_generator_node(state: MCQGeneratorState) -> Dict:
     validated_questions = state["validated_questions"]
     print(f"Generating distractors for {len(validated_questions)} questions")
     # Initialize LLM
-    llm_provider = state["config"].get("llm_provider", "groq")
-    model = state["config"].get("model", "openai/gpt-oss-120b")
+    llm_provider = state["config"].get("llm_provider", "openai")
+    model = state["config"].get("model", "nvidia/nemotron-3-super-120b-a12b:free")
     
     if llm_provider == "anthropic":
         llm = ChatAnthropic(model=model, temperature=0.7)

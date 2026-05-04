@@ -133,8 +133,8 @@ def stem_generator_node(state: MCQGeneratorState) -> Dict:
     current_batch = state["current_batch"]
     print(f"Processing batch of {len(current_batch)} concepts")
     # Initialize LLM
-    llm_provider = state["config"].get("llm_provider", "groq")
-    model = state["config"].get("model", "openai/gpt-oss-120b")
+    llm_provider = state["config"].get("llm_provider", "openai")
+    model = state["config"].get("model", "nvidia/nemotron-3-super-120b-a12b:free")
     
     if llm_provider == "anthropic":
         llm = ChatAnthropic(model=model, temperature=0.5)

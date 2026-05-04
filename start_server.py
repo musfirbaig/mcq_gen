@@ -14,7 +14,7 @@ def check_env_file():
     env_path = Path(".env")
     
     if not env_path.exists():
-        print("❌ .env file not found!")
+        print("[X] .env file not found!")
         print("\nPlease create .env file:")
         print("  1. Copy .env.example to .env:")
         print("     cp .env.example .env")
@@ -23,7 +23,7 @@ def check_env_file():
         print("     - GOOGLE_API_KEY (or ANTHROPIC_API_KEY or OPENAI_API_KEY)")
         return False
     
-    print("✓ .env file found")
+    print("[OK] .env file found")
     
     # Check for required variables
     from dotenv import load_dotenv
@@ -35,14 +35,14 @@ def check_env_file():
     openai_key = os.getenv("OPENAI_API_KEY")
     
     if not mongodb_uri or "your_" in mongodb_uri or "username:password" in mongodb_uri:
-        print("❌ MONGODB_URI not configured in .env")
+        print("[X] MONGODB_URI not configured in .env")
         print("   Please add your MongoDB Atlas connection string")
         return False
     
-    print("✓ MONGODB_URI configured")
+    print("[OK] MONGODB_URI configured")
     
     if not any([google_key, anthropic_key, openai_key]):
-        print("❌ No LLM API key configured in .env")
+        print("[X] No LLM API key configured in .env")
         print("   Please add at least one of:")
         print("   - GOOGLE_API_KEY")
         print("   - ANTHROPIC_API_KEY")
@@ -50,11 +50,11 @@ def check_env_file():
         return False
     
     if google_key and "your_" not in google_key:
-        print("✓ GOOGLE_API_KEY configured")
+        print("[OK] GOOGLE_API_KEY configured")
     if anthropic_key and "your_" not in anthropic_key:
-        print("✓ ANTHROPIC_API_KEY configured")
+        print("[OK] ANTHROPIC_API_KEY configured")
     if openai_key and "your_" not in openai_key:
-        print("✓ OPENAI_API_KEY configured")
+        print("[OK] OPENAI_API_KEY configured")
     
     return True
 
@@ -66,10 +66,10 @@ def check_dependencies():
         import uvicorn
         import motor
         import pymongo
-        print("✓ All dependencies installed")
+        print("[OK] All dependencies installed")
         return True
     except ImportError as e:
-        print(f"❌ Missing dependencies: {e.name}")
+        print(f"[X] Missing dependencies: {e.name}")
         print("\nPlease install dependencies:")
         print("  pip install -r requirements.txt")
         return False
@@ -120,7 +120,7 @@ def main():
         print("="*60)
         sys.exit(1)
     
-    print("\n✅ All checks passed! Ready to start server.\n")
+    print("\n[OK] All checks passed! Ready to start server.\n")
     
     # Start server
     try:
@@ -130,7 +130,7 @@ def main():
         print("Server stopped by user")
         print("="*60)
     except Exception as e:
-        print(f"\n\n❌ Server error: {e}")
+        print(f"\n\n[X] Server error: {e}")
         print("="*60)
         sys.exit(1)
 

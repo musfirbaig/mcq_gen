@@ -21,8 +21,8 @@ class MCQGenerator:
     
     def __init__(
         self,
-        llm_provider: Literal["anthropic", "openai", "gemini", "groq"] = "groq",
-        model: str = "openai/gpt-oss-120b",
+        llm_provider: Literal["anthropic", "openai", "gemini", "groq"] = "openai",
+        model: str = "nvidia/nemotron-3-super-120b-a12b:free",
         batch_size: int = 15
     ):
         """
@@ -34,7 +34,7 @@ class MCQGenerator:
             batch_size: Number of concepts to process per batch (10-15 recommended)
         """
         load_dotenv()
-        
+
         self.llm_provider = llm_provider
         self.model = model
         self.batch_size = batch_size
